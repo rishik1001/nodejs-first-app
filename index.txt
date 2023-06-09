@@ -1,0 +1,54 @@
+// // const http = require("http");
+// import http from "http" 
+// // import name, { name1 } from "./exports.js"
+// // import {name2} from "./exports.js"
+// // const name = require("./exports.js"); 
+// import * as Obj from "./exports.js"
+// console.log(Obj.default);
+// const server = http.createServer((req, res) => {
+//     // console.log(req.url);
+//     //Can also write html
+//     if (req.url == '/about') {
+//         res.end("<h1>About page</h1>")
+//     }
+//     else if (req.url == '/') {
+//         res.end("Home Page");
+//     }
+//     else {
+//         res.end("Page Not Found");
+//     }
+// });
+// server.listen(5000, () => {
+//     console.log("Server is working");
+// });
+import express from "express";
+import path from "path";
+const server = express();
+import mongoose from "mongoose";
+//  Setting up view engine
+server.set("view engine","ejs"); 
+mongoose.connect("mongodb://127.0.0.1:27017",{
+    dbName: "backend",
+}).then(()=>console.log("Database Connected")).catch(e=>console.log(e));
+const messageSchema = mongoose.Schema({
+    name: String,
+    email: String,
+});
+const Message = mongoose.model("Messages",messageSchema);
+// app.use(express.static(path.join(path.resolve(),"public"))); //setting a folder
+server.get("/", async (req, res) => {
+    // res.send("Hi");
+    // res.json({
+    //     success: true,
+    //     products: [],
+    // });
+    //console.log(path.resolve()); gives the directory
+    // const pathLoc = path.resolve();
+    // res.sendFile(path.join(pathLoc,"index.html"));
+    //res.render("index1.ejs",{name: "Rishik"}); either set it up or give extension
+    await Message.create({name: "Rishik",email: "rishik1718@gmail.com"});
+    res.send("Nice");
+});
+server.listen(5000, () => {
+    console.log("Rishik");
+});
